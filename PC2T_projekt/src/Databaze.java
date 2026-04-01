@@ -14,6 +14,7 @@ public class Databaze {
 		prvkyDatabaze.put(dalsiID, new Zamestnanec(dalsiID, jmeno, prijmeni, rok, typ));
 		dalsiID++;
 	}
+
 	
 	public void setSpoluprace(int IDzam, int IDkol, String ur_spol) {
 		Zamestnanec zamestnanec = prvkyDatabaze.get(IDzam);
@@ -85,9 +86,9 @@ public class Databaze {
 				System.out.print(", Jmeno: "+spolupracovnik.getPrijmeni()+", "+spolupracovnik.getJmeno());
 				System.out.println(", kvalita spoluprace: "+ spolupracovnici.get(j));
 				switch (spolupracovnici.get(j)) {
-					case "dobra": dobra++;
-					case "prumerna": prumerna++;
-					case "spatna": spatna++;
+					case "dobra": dobra++; break;
+					case "prumerna": prumerna++; break;
+					case "spatna": spatna++; break;
 					}
 				}
 			System.out.print("Dobre spoluprace: "+ dobra);
