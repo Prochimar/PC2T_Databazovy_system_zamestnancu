@@ -1,0 +1,1 @@
+INDEX VERSION 1.134+C:\Users\postu\OneDrive\Dokumenty\GitHub\PC2T_Databazovy_system_zamestnancu\PC2T_projekt\.metadata\.plugins\org.eclipse.jdt.core
