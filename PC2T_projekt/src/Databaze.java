@@ -1,36 +1,53 @@
+import java.io.*;
+import java.sql.*;
 import java.util.*;
 
 public class Databaze {
 	private Map<Integer,Zamestnanec> prvkyDatabaze;
 	private int dalsiID;
-	private String typ = "placeholder";
 	
 	public Databaze() {
 		prvkyDatabaze = new HashMap<>();
 		dalsiID = 1;
 	}
 	
-	public void setZamestnanec(String jmeno, String prijmeni, int rok) {
-		prvkyDatabaze.put(dalsiID, new Zamestnanec(dalsiID, jmeno, prijmeni, rok, typ));
-		dalsiID++;
-	}
+	public Map<Integer, Zamestnanec> getPrvky() {
+        return prvkyDatabaze;
+    }
 
-	
-	public void setSpoluprace(int IDzam, int IDkol, String ur_spol) {
-		Zamestnanec zamestnanec = prvkyDatabaze.get(IDzam);
-		zamestnanec.setSpolupracovnici(IDkol, ur_spol);
-	}
-	
+
+
+    public Zamestnanec pridejSpecialistu(String jmeno, String prijmeni, int rok) {
+        BezpecnostniSpecialista z = new BezpecnostniSpecialista(dalsiID++, jmeno, prijmeni, rok, prvkyDatabaze);
+        prvkyDatabaze.put(z.getID(), z);
+        return z;
+    }
+ 
+    public Zamestnanec pridejDatovehoAnalytika(String jmeno, String prijmeni, int rok) {
+        DatovyAnalytik z = new DatovyAnalytik(dalsiID++, jmeno, prijmeni, rok, prvkyDatabaze);
+        prvkyDatabaze.put(z.getID(), z);
+        return z;
+    }
+
+
+
 	public boolean removeZamestnanec(int ID) {
 		if (prvkyDatabaze.remove(ID)==null)
 			return false;
 		return true;
 	}
+	/*
+	public void setSpoluprace(int IDzam, int IDkol, String ur_spol) {
+		Zamestnanec zamestnanec = prvkyDatabaze.get(IDzam);
+		zamestnanec.setSpolupracovnici(IDkol, ur_spol);
+	}
 	
+ 	*/
+
 	public Zamestnanec getZamestnanec(int ID) {
 		return prvkyDatabaze.get(ID);
 	}
-	
+	//seznam zamestnancu stejného typu
 	private ArrayList<Zamestnanec> sameTyp(String typ) {
 		ArrayList<Zamestnanec> typList = new ArrayList<Zamestnanec>();
 		for (int i: prvkyDatabaze.keySet()) {
@@ -56,7 +73,7 @@ public class Databaze {
 					System.out.print("ID: "+j.getID());
 					System.out.print(", Jmeno: "+j.getJmeno());
 					System.out.print(", Prijmeni: "+j.getPrijmeni());
-					System.out.println(", Rok narozeni: "+j.getRok());
+					System.out.println(", Rok narozeni: "+j.getRokNarozeni());
 					break;
 				}
 				
@@ -75,20 +92,20 @@ public class Databaze {
 			System.out.print("ID: "+ i);
 			System.out.println(", Jmeno: "+zamestnanec.getPrijmeni()+", "+zamestnanec.getJmeno());
 			System.out.println("Spolupracovnici: ");
-			Map<Integer,String> spolupracovnici = zamestnanec.getSpolupracovnici();
+			List<Spoluprace> spolupracovnici = zamestnanec.getSpoluprace();
 			
 			int spatna = 0;
 			int prumerna = 0;
 			int dobra = 0;
-			for (int j: spolupracovnici.keySet()) {
-				System.out.print("ID: "+ j);
-				Zamestnanec spolupracovnik = prvkyDatabaze.get(j);
+			for (Spoluprace spoluprace: spolupracovnici) {
+				System.out.print("ID: "+ spoluprace.getIdKolegy());
+				Zamestnanec spolupracovnik = prvkyDatabaze.get(spoluprace.getIdKolegy());
 				System.out.print(", Jmeno: "+spolupracovnik.getPrijmeni()+", "+spolupracovnik.getJmeno());
-				System.out.println(", kvalita spoluprace: "+ spolupracovnici.get(j));
-				switch (spolupracovnici.get(j)) {
-					case "dobra": dobra++; break;
-					case "prumerna": prumerna++; break;
-					case "spatna": spatna++; break;
+				System.out.println(", kvalita spoluprace: "+ spoluprace.getUroven());
+				switch (spoluprace.getUroven()) {
+                    case DOBRA: dobra++; break;
+                    case PRUMERNA: prumerna++; break;
+                    case SPATNA: spatna++; break;
 					}
 				}
 			System.out.print("Dobre spoluprace: "+ dobra);
