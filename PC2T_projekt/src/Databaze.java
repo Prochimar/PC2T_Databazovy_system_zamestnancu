@@ -142,4 +142,92 @@ public class Databaze {
 		int pocet = zamestnanecList.size();
 		return pocet;
 	}
+
+
+
+
+
+
+    private static final String DB_URL = "jdbc:sqlite:zamestnanci.db";
+
+    public void ulozDoSQL() {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            conn.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS zamestnanci (" +
+                "id INTEGER PRIMARY KEY, jmeno TEXT, prijmeni TEXT, rok INTEGER, typ TEXT)");
+            conn.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS spoluprace (" +
+                "id_zam INTEGER, id_kol INTEGER, uroven TEXT, " +
+                "PRIMARY KEY (id_zam, id_kol))");
+
+            PreparedStatement psZ = conn.prepareStatement(
+                "INSERT OR REPLACE INTO zamestnanci VALUES (?,?,?,?,?)");
+            PreparedStatement psS = conn.prepareStatement(
+                "INSERT OR REPLACE INTO spoluprace VALUES (?,?,?)");
+
+            for (Zamestnanec z : prvkyDatabaze.values()) {
+                psZ.setInt(1, z.getID());
+                psZ.setString(2, z.getJmeno());
+                psZ.setString(3, z.getPrijmeni());
+                psZ.setInt(4, z.getRokNarozeni());
+                psZ.setString(5, z.getTyp());
+                psZ.executeUpdate();
+
+                for (Spoluprace s : z.getSpoluprace()) {
+                    psS.setInt(1, z.getID());
+                    psS.setInt(2, s.getIdKolegy());
+                    psS.setString(3, s.getUroven().name());
+                    psS.executeUpdate();
+                }
+            }
+            System.out.println("Uloženo do SQL.");
+        } catch (SQLException e) {
+            System.out.println("SQL chyba při ukládání: " + e.getMessage());
+        }
+    }
+
+    public void nactiZSQL() {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            ResultSet rsZ = conn.createStatement().executeQuery(
+                "SELECT * FROM zamestnanci");
+            while (rsZ.next()) {
+                int id = rsZ.getInt("id");
+                String jmeno = rsZ.getString("jmeno");
+                String prijmeni = rsZ.getString("prijmeni");
+                int rok = rsZ.getInt("rok");
+                String typ = rsZ.getString("typ");
+
+                Zamestnanec z;
+                if ("Datový analytik".equals(typ))
+                    z = new DatovyAnalytik(id, jmeno, prijmeni, rok, prvkyDatabaze);
+                else
+                    z = new BezpecnostniSpecialista(id, jmeno, prijmeni, rok, prvkyDatabaze);
+
+                prvkyDatabaze.put(id, z);
+                if (id >= dalsiID) dalsiID = id + 1;
+            }
+
+            ResultSet rsS = conn.createStatement().executeQuery(
+                "SELECT * FROM spoluprace");
+            while (rsS.next()) {
+                int idZ = rsS.getInt("id_zam");
+                int idK = rsS.getInt("id_kol");
+                UrovenSpoluprace ur = UrovenSpoluprace.valueOf(rsS.getString("uroven"));
+                Zamestnanec z = prvkyDatabaze.get(idZ);
+                if (z != null) z.pridejSpolupraci(idK, ur);
+            }
+            System.out.println("Načteno z SQL.");
+        } catch (SQLException e) {
+            System.out.println("SQL chyba nebo prázdná DB: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
