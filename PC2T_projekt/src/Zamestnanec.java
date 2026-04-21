@@ -9,8 +9,6 @@ public abstract class Zamestnanec implements Dovednost, Serializable {
 	private int rokNarozeni;
 	private String jmeno;
 	private String prijmeni;
-	//private String typ;
-	//private Map<Integer,String> Spolupracovnici; //pokud to chapu dobre, zamestnanec si eviduje ID a uroven spoluprace, ne celeho zamestnance
 	private List<Spoluprace> spoluprace;
 
 
@@ -20,9 +18,7 @@ public abstract class Zamestnanec implements Dovednost, Serializable {
 		this.prijmeni = prijmeni;
 		this.rokNarozeni = rokNarozeni;
 		this.spoluprace = new ArrayList<>();
-		//this.typ = typ; //je dobre popremyslet, jeslti budeme zadavat typy zamnestnancu jako str nebo ne, prozatim delam jen tu databazi ale
 	}
-
 
 	
 	public int getID() {
@@ -41,20 +37,6 @@ public abstract class Zamestnanec implements Dovednost, Serializable {
 		return spoluprace;
 	}
 
-	/* 
-	public String getTyp() {
-		return typ;
-	}
-
-	public Map<Integer,String> getSpolupracovnici() {
-		return Spolupracovnici;
-	}
-
-	public void setSpolupracovnici(int ID, String ur_spol) {
-		Spolupracovnici.put(ID, ur_spol);
-	}
-*/
-	
     public void pridejSpolupraci(int idKolegy, UrovenSpoluprace uroven) {
         spoluprace.add(new Spoluprace(idKolegy, uroven));
     }

@@ -36,17 +36,11 @@ public class Databaze {
 			return false;
 		return true;
 	}
-	/*
-	public void setSpoluprace(int IDzam, int IDkol, String ur_spol) {
-		Zamestnanec zamestnanec = prvkyDatabaze.get(IDzam);
-		zamestnanec.setSpolupracovnici(IDkol, ur_spol);
-	}
-	
- 	*/
 
 	public Zamestnanec getZamestnanec(int ID) {
 		return prvkyDatabaze.get(ID);
 	}
+	
 	//seznam zamestnancu stejného typu
 	private ArrayList<Zamestnanec> sameTyp(String typ) {
 		ArrayList<Zamestnanec> typList = new ArrayList<Zamestnanec>();

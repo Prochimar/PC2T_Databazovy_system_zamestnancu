@@ -29,6 +29,6 @@ public class BezpecnostniSpecialista extends Zamestnanec {
     public void spustDovednost() {
         System.out.println("=== Dovednost: Bezpečnostní specialista – rizikové skóre ===");
 
-//TODO: implementace výpočtu rizikového skóre
+        //TODO: implementace výpočtu rizikového skóre
 	}
 }
