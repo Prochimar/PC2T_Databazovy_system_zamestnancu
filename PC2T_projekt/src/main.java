@@ -4,6 +4,7 @@ public class main {
 
 	public static void main(String[] args) {
 	    Databaze db = new Databaze();
+	    db.nactiZSQL();
 	    Scanner sc = new Scanner(System.in);
 	    boolean bezi = true;
 		while (bezi) {
@@ -23,27 +24,167 @@ public class main {
 	            System.out.print("Volba: ");
 	
 			int volba;
+			volba = sc.nextInt(); //prozatím sem, na tohle seru, DMA volá
 			//TODO: Přidat ošetření neplatného vstupu
 			try {
-		
+				
 			} catch (Exception e) {
-		
+				
 			}
 		
-		
-		
 			switch (volba) {
-				case 1 -> {}
-				case 2 -> {}
-				case 3 -> {}
-				case 4 -> {}
-				case 5 -> {}
-				case 6  -> {}
-				case 7  -> {}
-				case 8  -> {}
-				case 9  -> {}
-				case 10 -> {}
-				case 11 -> {}
+				case 1 -> {
+					System.out.println("Zadej jméno: ");
+					String jmeno = sc.next();
+					System.out.println("Zadej příjmení: ");
+					String prijmeni = sc.next();
+					System.out.println("Zadej rok narození: ");
+					int rok = sc.nextInt();
+					while (true) {
+						System.out.println("Vyber typ: ");
+						System.out.println("1. Bezpečnostní specialista");
+						System.out.println("2. Datový analytik");
+						try {
+							int typ = sc.nextInt();
+							if (typ == 1) {
+								db.pridejSpecialistu(jmeno, prijmeni, rok);
+							}
+							else if (typ == 2) {
+								db.pridejDatovehoAnalytika(jmeno, prijmeni, rok);
+							}
+							break;
+						} catch (Exception e) {
+							System.out.println("Chyba, zkuste znovu");
+							e.printStackTrace();
+							continue;
+						}
+						
+					}
+					System.out.println("Zaměstnanec byl úspěšně přidán.");
+					break;
+				}
+				case 2 -> {
+					System.out.println("Zadej ID zaměstnance, ke kterému chceš přidat spolupráci: ");
+					int id = sc.nextInt();
+					Zamestnanec zamestnanec = db.getZamestnanec(id);
+					System.out.println("Zadej ID kolegy: ");
+					int idKolegy = sc.nextInt();
+					while (true) {
+						System.out.println("Vyber úroveň spolupráce: ");
+						System.out.println("1. Dobrá");
+						System.out.println("2. Průměrná");
+						System.out.println("3. Špatná");
+						try {
+							int uroven = sc.nextInt();
+							if (uroven == 1) {
+								zamestnanec.pridejSpolupraci(idKolegy,UrovenSpoluprace.DOBRA);
+							}
+							else if (uroven == 2) {
+								zamestnanec.pridejSpolupraci(idKolegy,UrovenSpoluprace.PRUMERNA);
+							}
+							else if (uroven == 3) {
+								zamestnanec.pridejSpolupraci(idKolegy,UrovenSpoluprace.SPATNA);
+							}
+							break;
+						} catch (Exception e) {
+							System.out.println("Chyba, zkuste znovu");
+							e.printStackTrace();
+							continue;
+						}
+					}
+					System.out.println("Spolupráce byla úspěšně přidána.");
+					break;
+					
+				}
+				case 3 -> {
+					System.out.println("Zadej ID zaměstnance: ");
+					int id = sc.nextInt();
+					try {
+						db.removeZamestnanec(id);
+						System.out.println("Zaměstnanec byl úspěšně odebrán.");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+					
+				}
+				case 4 -> {
+					System.out.println("Zadej ID zaměstnance: ");
+					int id = sc.nextInt();
+					try {
+						Zamestnanec zamestnanec = db.getZamestnanec(id);
+						System.out.println("Načten zaměstnanec: ");
+						System.out.println("ID: " +zamestnanec.getID());
+						System.out.println("Jméno: " +zamestnanec.getJmeno());
+						System.out.println("Příjmení: " +zamestnanec.getPrijmeni());
+						System.out.println("Rok narození: " +zamestnanec.getRokNarozeni());
+						String typ = zamestnanec.getTyp();
+						if (typ == "DA") {
+							typ = "Datový Analytik";
+						}
+						else {
+							typ = "Bezpečnostní specialista";
+						}
+						System.out.println("Typ: " +typ);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				}
+				case 5 -> {
+					System.out.println("Zadej ID zaměstnance: ");
+					int id = sc.nextInt();
+					try {
+						Zamestnanec zamestnanec = db.getZamestnanec(id);
+						zamestnanec.spustDovednost();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				}
+				case 6  -> {
+					db.printAlphabetOrder("DA");
+					db.printAlphabetOrder("BS");
+					break;
+				}
+				case 7  -> {
+					db.kvalitaSpoluprace();
+					break;
+				}
+				case 8  -> {
+					int pocetDA = db.pocetPodleTypu("DA");
+					int pocetBS = db.pocetPodleTypu("BS");
+					System.out.println("Počet bezpečnostních specialistů: " +pocetBS);
+					System.out.println("Počet datových analytiků: " +pocetDA);
+					break;
+					
+				}
+				case 9  -> {
+					if (db.ulozDoSouboru("databaze.txt")) {
+						System.out.println("Zápis se podařil");
+					}
+					else {
+						System.out.println("Zápis se nezdařil");
+					}
+					break;
+				}
+				case 10 -> {
+					if (db.nacteniZeSouboru("databaze.txt")) {
+						System.out.println("Vypis se podařil");
+					}
+					else {
+						System.out.println("Vypis se nezdařil");
+					}
+					break;
+				}
+				case 11 -> {
+					db.ulozDoSQL();
+					bezi = false;
+					break;
+				}
 				default -> System.out.println("Neplatná volba.");
 			}
 		}

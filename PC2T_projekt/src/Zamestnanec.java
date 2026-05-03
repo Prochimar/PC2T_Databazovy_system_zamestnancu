@@ -5,11 +5,11 @@ import java.util.List;
 
 public abstract class Zamestnanec implements Dovednost, Serializable {
   
-	private int ID;
+	protected int ID;
 	private int rokNarozeni;
 	private String jmeno;
 	private String prijmeni;
-	private List<Spoluprace> spoluprace;
+	protected List<Spoluprace> spoluprace;
 
 
 	public Zamestnanec(int ID, String jmeno, String prijmeni, int rokNarozeni ) {

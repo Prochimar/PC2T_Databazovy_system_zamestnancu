@@ -136,10 +136,114 @@ public class Databaze {
 		int pocet = zamestnanecList.size();
 		return pocet;
 	}
-
-
-
-
+	
+	public boolean ulozDoSouboru(String jmenoSouboru) {
+		try (FileWriter fw=new FileWriter(jmenoSouboru);
+				BufferedWriter bw=new BufferedWriter(fw))
+			{
+				bw.write("Pocet: "+prvkyDatabaze.size());
+				bw.newLine();
+				for (int i: prvkyDatabaze.keySet())
+				{
+					Zamestnanec aktualni_zamestnanec = prvkyDatabaze.get(i);
+					if (aktualni_zamestnanec==null)
+						break;
+					bw.write("ID: "+aktualni_zamestnanec.getID());
+					bw.write(" jmeno: "+aktualni_zamestnanec.getJmeno());
+					bw.write(" příjmení: "+aktualni_zamestnanec.getPrijmeni());
+					bw.write(" ročník: "+aktualni_zamestnanec.getRokNarozeni());
+					bw.write(" typ: "+aktualni_zamestnanec.getTyp());
+					
+					List<Spoluprace> list_spolupraci = aktualni_zamestnanec.getSpoluprace();
+					int pocet_spolupraci = list_spolupraci.size();
+					bw.write(" spoluprace: " + pocet_spolupraci);
+					
+					for (Spoluprace j: list_spolupraci) {
+						bw.write(" ID: " + j.getIdKolegy());
+						bw.write(" úroveň spolupráce: " + j.getUroven().name());
+					}
+					bw.newLine();
+				}
+			} 
+			catch (IOException e) {
+				System.out.println("Nepodarilo se otevrit soubor");
+				return false;
+			}
+			
+			
+			return true;
+	}
+	
+	public boolean nacteniZeSouboru(String jmenoSoboru)
+	{
+		try (FileReader fr = new FileReader(jmenoSoboru);
+			BufferedReader br=new BufferedReader(fr);
+			Scanner sc=new Scanner(br))
+		{
+			sc.useLocale(Locale.US);
+			String text=sc.next();
+			if (text.compareTo("Pocet:")!=0||!sc.hasNextInt())
+			{
+				System.out.println("Chybny format dat");
+				return false;
+			}
+			
+			while(sc.hasNext()&&sc.next().compareTo("ID:")==0)
+			{
+				int ID = sc.nextInt();
+				sc.next();
+				sc.next();
+				String jmeno=sc.next();
+				sc.next();
+				sc.next();
+				String prijmeni = sc.next();
+				sc.next();
+				sc.next();
+				if (!sc.hasNextInt())
+				{
+					System.out.println("Chybny format dat pro studenta "+jmeno);
+					sc.nextLine();
+					continue;
+				}
+				int rok=sc.nextInt();
+				sc.next();
+				sc.next();
+				String typ = sc.next();
+				Zamestnanec z;
+				if (typ == "DA") {
+					z = new DatovyAnalytik(ID, jmeno, prijmeni, rok, prvkyDatabaze);
+				}
+				else {
+					z = new BezpecnostniSpecialista(ID, jmeno, prijmeni, rok, prvkyDatabaze);
+				}
+				sc.next();
+				sc.next();
+				int pocet_spolupraci = sc.nextInt();
+				for (int i = 0; i < pocet_spolupraci; i++) {
+					sc.next();
+					sc.next();
+					int IDkolegy = sc.nextInt();
+					sc.next();
+					sc.next();
+					String ur_str = sc.next();
+					UrovenSpoluprace ur = UrovenSpoluprace.valueOf(ur_str);
+					z.pridejSpolupraci(IDkolegy, ur);
+				}
+			}
+			
+		} 
+		catch (FileNotFoundException e) {
+			System.out.println("Soubor nelze otervit");
+			return false;
+		} 
+		catch (IOException e1) {
+			System.out.println("Soubor nelze otervit");
+			return false;
+		}
+		
+		
+		return true;
+	}
 
 
     private static final String DB_URL = "jdbc:sqlite:zamestnanci.db";
@@ -192,7 +296,7 @@ public class Databaze {
                 String typ = rsZ.getString("typ");
 
                 Zamestnanec z;
-                if ("Datový analytik".equals(typ))
+                if ("DA".equals(typ))
                     z = new DatovyAnalytik(id, jmeno, prijmeni, rok, prvkyDatabaze);
                 else
                     z = new BezpecnostniSpecialista(id, jmeno, prijmeni, rok, prvkyDatabaze);
