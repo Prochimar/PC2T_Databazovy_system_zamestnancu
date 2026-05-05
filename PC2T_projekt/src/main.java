@@ -236,7 +236,7 @@ public class main {
 			}			
 			} catch (Exception e) {
 				sc.nextLine(); 
-                System.out.println("Chyba: Musíš zadat číslo, ne text!  sdaasdasdasdasdads");
+                System.out.println("Chyba: Musíš zadat číslo, ne text!");
 			}
 		}
 		sc.close();
