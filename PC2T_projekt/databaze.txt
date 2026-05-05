@@ -1,2 +1,5 @@
-Pocet: 1
-ID: 1 jmeno: Adam příjmení: Dadam ročník: 2000 typ: BS spoluprace: 0
+Pocet: 4
+ID: 1 Jmeno: Marek Prijmeni: Amarek Rocnik: 2006 Typ: BS Spoluprace: 2 ID: 2 Uroven: PRUMERNA ID: 3 Uroven: DOBRA
+ID: 2 Jmeno: Eli Prijmeni: Beli Rocnik: 2000 Typ: DA Spoluprace: 1 ID: 3 Uroven: SPATNA
+ID: 3 Jmeno: Kiki Prijmeni: Ckiki Rocnik: 1996 Typ: BS Spoluprace: 1 ID: 4 Uroven: DOBRA
+ID: 4 Jmeno: Krystof Prijmeni: Dkrystof Rocnik: 1998 Typ: DA Spoluprace: 0

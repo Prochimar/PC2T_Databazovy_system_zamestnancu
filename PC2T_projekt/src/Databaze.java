@@ -108,13 +108,11 @@ public class Databaze {
                     case SPATNA: spatna++; break;
 					}
 				}
-			//TODO: ošéfit případ kdy jen někteří zamestnanci nemají spolupracovníky, aby se to nezobrazovalo jako "Spatna" nebo "Dobra" atd
-			//if(nej_vaz != null) {
+			
 			System.out.print("Dobre spoluprace: "+ dobra);
 			System.out.print(", Prumerne spoluprace: "+ prumerna);
 			System.out.println(", Spatne spoluprace: "+ spatna);
-			//}
-		
+			
 			if (spolupracovnici.size() > pocet_nej_vaz) {
 				pocet_nej_vaz = spolupracovnici.size();
 				nej_vaz = prvkyDatabaze.get(i);
@@ -135,15 +133,13 @@ public class Databaze {
 		else {
 			System.out.println("Dobra");
 		}
-		//if(nej_vaz != null) {
+
 		System.out.println("Pracovnik s nejvice spolupracemi:");
 		System.out.print("ID: "+ nej_vaz.getID());
 		System.out.println(", Jmeno: "+ nej_vaz.getPrijmeni()+", "+nej_vaz.getJmeno());
-		//}else {
-		//	System.out.println("Zaměstnanec nemá žádné spolupracovníky");
-		//}
-		//TODO: ošéfit případ kdy jen někteří zamestnanci nemají spolupracovníky, aby se to nezobrazovalo jako "Spatna" nebo "Dobra" atd.
+		
 	}
+	
 	public int pocetPodleTypu(String typ) {
 		ArrayList<Zamestnanec> zamestnanecList = sameTyp(typ);
 		int pocet = zamestnanecList.size();
@@ -210,13 +206,10 @@ public class Databaze {
 			{
 				int ID = sc.nextInt();
 				sc.next();
-				//sc.next();
 				String Jmeno=sc.next();
 				sc.next();
-				//sc.next();
 				String Prijmeni = sc.next();
 				sc.next();
-				//sc.next();
 				if (!sc.hasNextInt())
 				{
 					System.out.println("Chybny format dat pro studenta "+Jmeno);
@@ -225,7 +218,6 @@ public class Databaze {
 				}
 				int Rocnik=sc.nextInt();
 				sc.next();
-				//sc.next();
 				String Typ = sc.next();
 				Zamestnanec z;
 				if (Typ.equals("DA")) {
@@ -235,13 +227,10 @@ public class Databaze {
 					z = new BezpecnostniSpecialista(ID, Jmeno, Prijmeni, Rocnik, prvkyDatabaze);
 				}
 				sc.next();
-				//sc.next();
 				int pocet_spolupraci = sc.nextInt();
 				for (int i = 0; i < pocet_spolupraci; i++) {
-					//sc.next();
 					sc.next();
 					int IDkolegy = sc.nextInt();
-					//sc.next();
 					sc.next();
 					String ur_str = sc.next();
 					UrovenSpoluprace ur = UrovenSpoluprace.valueOf(ur_str);

@@ -45,10 +45,8 @@ public abstract class Zamestnanec implements Dovednost, Serializable {
         spoluprace.removeIf(s -> s.getIdKolegy() == idKolegy);
     }
 
-    // Vrátí typ jako řetězec pro výpis
     public abstract String getTyp();
 
-    // Abstraktní metoda z rozhraní Dovednost – každá podtřída implementuje vlastní logiku
     @Override
     public abstract void spustDovednost();
 
