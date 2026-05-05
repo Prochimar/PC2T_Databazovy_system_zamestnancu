@@ -41,7 +41,7 @@ public class Databaze {
 		return prvkyDatabaze.get(ID);
 	}
 	
-	//seznam zamestnancu stejného typu
+	
 	private ArrayList<Zamestnanec> sameTyp(String typ) {
 		ArrayList<Zamestnanec> typList = new ArrayList<Zamestnanec>();
 		for (int i: prvkyDatabaze.keySet()) {
@@ -82,7 +82,7 @@ public class Databaze {
 	}
 	
 	public void kvalitaSpoluprace() {
-		Zamestnanec nej_vaz = null; //zmenit jakmile budeme delat vyjimky
+		Zamestnanec nej_vaz = null; 
 		int pocet_nej_vaz = 0;
 		int spatna_celkem = 0;
 		int prumerna_celkem = 0;
@@ -113,20 +113,13 @@ public class Databaze {
                     case SPATNA: spatna++; break;
 					}
 				}
-<<<<<<< Updated upstream
-			
-			System.out.print("Dobre spoluprace: "+ dobra);
-			System.out.print(", Prumerne spoluprace: "+ prumerna);
-			System.out.println(", Spatne spoluprace: "+ spatna);
-			
-=======
 			if (!spolupracovnici.isEmpty()) {
 			System.out.print("Dobre spoluprace: "+ dobra);
 			System.out.print(", Prumerne spoluprace: "+ prumerna);
 			System.out.println(", Spatne spoluprace: "+ spatna);
 			}
-		
->>>>>>> Stashed changes
+
+
 			if (spolupracovnici.size() > pocet_nej_vaz) {
 				pocet_nej_vaz = spolupracovnici.size();
 				nej_vaz = prvkyDatabaze.get(i);
@@ -153,7 +146,6 @@ public class Databaze {
 			System.out.print("ID: "+ nej_vaz.getID());
 			System.out.println(", Jmeno: "+ nej_vaz.getPrijmeni()+", "+nej_vaz.getJmeno());
 		}
-<<<<<<< Updated upstream
 		else {
 			System.out.println("Dobra");
 		}
@@ -164,9 +156,6 @@ public class Databaze {
 		
 	}
 	
-=======
-}
->>>>>>> Stashed changes
 	public int pocetPodleTypu(String typ) {
 		ArrayList<Zamestnanec> zamestnanecList = sameTyp(typ);
 		int pocet = zamestnanecList.size();
