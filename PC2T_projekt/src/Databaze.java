@@ -151,9 +151,12 @@ public class Databaze {
 	}
 	
 	public boolean ulozDoSouboru(String jmenoSouboru) {
+
+
 		try (FileWriter fw=new FileWriter(jmenoSouboru);
 				BufferedWriter bw=new BufferedWriter(fw))
 			{
+		
 				bw.write("Pocet: "+prvkyDatabaze.size());
 				bw.newLine();
 				for (int i: prvkyDatabaze.keySet())
@@ -162,18 +165,18 @@ public class Databaze {
 					if (aktualni_zamestnanec==null)
 						break;
 					bw.write("ID: "+aktualni_zamestnanec.getID());
-					bw.write(" jmeno: "+aktualni_zamestnanec.getJmeno());
-					bw.write(" příjmení: "+aktualni_zamestnanec.getPrijmeni());
-					bw.write(" ročník: "+aktualni_zamestnanec.getRokNarozeni());
-					bw.write(" typ: "+aktualni_zamestnanec.getTyp());
+					bw.write(" Jmeno: "+aktualni_zamestnanec.getJmeno());
+					bw.write(" Prijmeni: "+aktualni_zamestnanec.getPrijmeni());
+					bw.write(" Rocnik: "+aktualni_zamestnanec.getRokNarozeni());
+					bw.write(" Typ: "+aktualni_zamestnanec.getTyp());
 					
 					List<Spoluprace> list_spolupraci = aktualni_zamestnanec.getSpoluprace();
 					int pocet_spolupraci = list_spolupraci.size();
-					bw.write(" spoluprace: " + pocet_spolupraci);
+					bw.write(" Spoluprace: " + pocet_spolupraci);
 					
 					for (Spoluprace j: list_spolupraci) {
 						bw.write(" ID: " + j.getIdKolegy());
-						bw.write(" úroveň spolupráce: " + j.getUroven().name());
+						bw.write(" Uroven: " + j.getUroven().name());
 					}
 					bw.newLine();
 				}
@@ -200,57 +203,60 @@ public class Databaze {
 				System.out.println("Chybny format dat");
 				return false;
 			}
-			
+
+
+			int pocet = sc.nextInt();
 			while(sc.hasNext()&&sc.next().compareTo("ID:")==0)
 			{
 				int ID = sc.nextInt();
 				sc.next();
+				//sc.next();
+				String Jmeno=sc.next();
 				sc.next();
-				String jmeno=sc.next();
+				//sc.next();
+				String Prijmeni = sc.next();
 				sc.next();
-				sc.next();
-				String prijmeni = sc.next();
-				sc.next();
-				sc.next();
+				//sc.next();
 				if (!sc.hasNextInt())
 				{
-					System.out.println("Chybny format dat pro studenta "+jmeno);
+					System.out.println("Chybny format dat pro studenta "+Jmeno);
 					sc.nextLine();
 					continue;
 				}
-				int rok=sc.nextInt();
+				int Rocnik=sc.nextInt();
 				sc.next();
-				sc.next();
-				String typ = sc.next();
+				//sc.next();
+				String Typ = sc.next();
 				Zamestnanec z;
-				if (typ == "DA") {
-					z = new DatovyAnalytik(ID, jmeno, prijmeni, rok, prvkyDatabaze);
+				if (Typ.equals("DA")) {
+					z = new DatovyAnalytik(ID, Jmeno, Prijmeni, Rocnik, prvkyDatabaze);
 				}
 				else {
-					z = new BezpecnostniSpecialista(ID, jmeno, prijmeni, rok, prvkyDatabaze);
+					z = new BezpecnostniSpecialista(ID, Jmeno, Prijmeni, Rocnik, prvkyDatabaze);
 				}
 				sc.next();
-				sc.next();
+				//sc.next();
 				int pocet_spolupraci = sc.nextInt();
 				for (int i = 0; i < pocet_spolupraci; i++) {
-					sc.next();
+					//sc.next();
 					sc.next();
 					int IDkolegy = sc.nextInt();
-					sc.next();
+					//sc.next();
 					sc.next();
 					String ur_str = sc.next();
 					UrovenSpoluprace ur = UrovenSpoluprace.valueOf(ur_str);
 					z.pridejSpolupraci(IDkolegy, ur);
 				}
+				prvkyDatabaze.put(ID, z);
 			}
 			
 		} 
 		catch (FileNotFoundException e) {
-			System.out.println("Soubor nelze otervit");
+			System.out.println("Soubor nelze otevrit");
 			return false;
 		} 
 		catch (IOException e1) {
-			System.out.println("Soubor nelze otervit");
+			System.out.println("Soubor nelze otevrit");
 			return false;
 		}
 		
