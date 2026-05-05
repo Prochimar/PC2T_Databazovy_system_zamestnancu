@@ -1,4 +1,4 @@
-import java.util.Map;
+//import java.util.Map;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public abstract class Zamestnanec implements Dovednost, Serializable {
 	protected List<Spoluprace> spoluprace;
 
 
-	public Zamestnanec(int ID, String jmeno, String prijmeni, int rokNarozeni ) {
+	public Zamestnanec(int ID, String jmeno, String prijmeni, int rokNarozeni) {
 		this.ID = ID;
 		this.jmeno = jmeno;
 		this.prijmeni = prijmeni;

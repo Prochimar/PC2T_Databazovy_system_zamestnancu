@@ -319,13 +319,4 @@ public class Databaze {
             System.out.println("SQL chyba nebo prázdná DB: " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
-
-
 }

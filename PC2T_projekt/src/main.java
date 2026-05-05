@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class main {
 
 	public static void main(String[] args) {
@@ -23,14 +22,13 @@ public class main {
 	                    11. Ukončit (+ uložení do SQL)""");
 	            System.out.print("Volba: ");
 	
-			int volba;
-			volba = sc.nextInt(); //prozatím sem, na tohle seru, DMA volá
-			//TODO: Přidat ošetření neplatného vstupu
 			try {
+				int volba;
+				volba = sc.nextInt(); //prozatím sem, na tohle seru, DMA volá
+			
+			
 				
-			} catch (Exception e) {
-				
-			}
+
 		
 			switch (volba) {
 				case 1 -> {
@@ -68,12 +66,20 @@ public class main {
 					int id = sc.nextInt();
 					Zamestnanec zamestnanec = db.getZamestnanec(id);
 					System.out.println("Zadej ID kolegy: ");
+
 					int idKolegy = sc.nextInt();
+					if (idKolegy == id) {
+						System.out.println("Chyba: Nemůžeš přidat spolupráci sám se sebou!");
+						break;
+					}
+					
+					int ukonceni = 0;
 					while (true) {
 						System.out.println("Vyber úroveň spolupráce: ");
 						System.out.println("1. Dobrá");
 						System.out.println("2. Průměrná");
 						System.out.println("3. Špatná");
+						System.out.println("4. ukončit přidávání spolupráce");
 						try {
 							int uroven = sc.nextInt();
 							if (uroven == 1) {
@@ -85,25 +91,41 @@ public class main {
 							else if (uroven == 3) {
 								zamestnanec.pridejSpolupraci(idKolegy,UrovenSpoluprace.SPATNA);
 							}
+							else if (uroven == 4) {
+								ukonceni = 1;
+								break;
+							}
 							break;
 						} catch (Exception e) {
-							System.out.println("Chyba, zkuste znovu");
-							e.printStackTrace();
+							//e.printStackTrace();
+							sc.nextLine(); 
+                			System.out.println("Chyba: Musíš zadat číslo, ne text!");
 							continue;
 						}
 					}
-					System.out.println("Spolupráce byla úspěšně přidána.");
-					break;
+					if(ukonceni == 0) {
+						System.out.println("Spolupráce byla úspěšně přidána.");
+						break;
+					}else {
+						System.out.println("Přidávání spolupráce bylo ukončeno.");
+						break;
+					}
+					
+					
 					
 				}
 				case 3 -> {
 					System.out.println("Zadej ID zaměstnance: ");
 					int id = sc.nextInt();
+					if (db.getZamestnanec(id) == null) {
+						System.out.println("Zaměstnanec s tímto ID neexistuje.");
+						break;
+					}
 					try {
 						db.removeZamestnanec(id);
 						System.out.println("Zaměstnanec byl úspěšně odebrán.");
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						System.out.println("Chyba při odebírání zaměstnance.");
 						e.printStackTrace();
 					}
 					break;
@@ -128,8 +150,9 @@ public class main {
 						}
 						System.out.println("Typ: " +typ);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Zaměstnanec s tímto ID neexistuje.");
+						//e.printStackTrace();
+						break;
 					}
 					break;
 				}
@@ -141,7 +164,10 @@ public class main {
 						zamestnanec.spustDovednost();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println();
+						System.out.println("Zaměstnanec s tímto ID neexistuje.");
+						//e.printStackTrace();
+						break;
 					}
 					break;
 				}
@@ -186,8 +212,13 @@ public class main {
 					break;
 				}
 				default -> System.out.println("Neplatná volba.");
+			}			
+			} catch (Exception e) {
+				sc.nextLine(); 
+                System.out.println("Chyba: Musíš zadat číslo, ne text!");
 			}
 		}
+		sc.close();
 	}
 }
 
