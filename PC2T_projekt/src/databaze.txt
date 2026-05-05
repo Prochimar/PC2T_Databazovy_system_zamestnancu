@@ -1,5 +1,0 @@
-Pocet: 4
-ID: 1 Jmeno: 1 Prijmeni: 1 Rocnik: 1 Typ: BS Spoluprace: 1 ID: 2 Uroven: DOBRA
-ID: 2 Jmeno: 2 Prijmeni: 2 Rocnik: 2 Typ: BS Spoluprace: 0
-ID: 3 Jmeno: 3 Prijmeni: 3 Rocnik: 3 Typ: DA Spoluprace: 1 ID: 4 Uroven: SPATNA
-ID: 4 Jmeno: 4 Prijmeni: 4 Rocnik: 4 Typ: DA Spoluprace: 0

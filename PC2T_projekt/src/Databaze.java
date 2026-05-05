@@ -82,7 +82,7 @@ public class Databaze {
 	}
 	
 	public void kvalitaSpoluprace() {
-		Zamestnanec nej_vaz = null; //zmenit jakmile budeme delat vyjimky
+		Zamestnanec nej_vaz = null; 
 		int pocet_nej_vaz = 0;
 		int spatna_celkem = 0;
 		int prumerna_celkem = 0;
@@ -91,7 +91,12 @@ public class Databaze {
 			Zamestnanec zamestnanec = prvkyDatabaze.get(i);
 			System.out.print("ID: "+ i);
 			System.out.println(", Jmeno: "+zamestnanec.getPrijmeni()+", "+zamestnanec.getJmeno());
+			
 			System.out.println("Spolupracovnici: ");
+			if (zamestnanec.getSpoluprace().isEmpty()) {
+				System.out.println("Neni k dispozici zadne spolupracovniky.");
+			}	
+
 			List<Spoluprace> spolupracovnici = zamestnanec.getSpoluprace();
 			
 			int spatna = 0;
@@ -108,11 +113,13 @@ public class Databaze {
                     case SPATNA: spatna++; break;
 					}
 				}
-			
+			if (!spolupracovnici.isEmpty()) {
 			System.out.print("Dobre spoluprace: "+ dobra);
 			System.out.print(", Prumerne spoluprace: "+ prumerna);
 			System.out.println(", Spatne spoluprace: "+ spatna);
-			
+			}
+
+
 			if (spolupracovnici.size() > pocet_nej_vaz) {
 				pocet_nej_vaz = spolupracovnici.size();
 				nej_vaz = prvkyDatabaze.get(i);
@@ -122,13 +129,22 @@ public class Databaze {
 			dobra_celkem += dobra;
 			}
 
-
-		System.out.print("Prevazujici kvalita spoluprace: ");
-		if (spatna_celkem > prumerna_celkem && spatna_celkem > dobra_celkem) {
-			System.out.println("Spatna");
+		if (spatna_celkem > 0 || prumerna_celkem > 0 || dobra_celkem > 0) {
+			System.out.print("Prevazujici kvalita spoluprace: ");
+			if (spatna_celkem > prumerna_celkem && spatna_celkem > dobra_celkem) {
+				System.out.println("Spatna");
+			}
+			else if (prumerna_celkem > dobra_celkem) {
+				System.out.println("Prumerna");
+			}
+			else {
+				System.out.println("Dobra");
+			}
 		}
-		else if (prumerna_celkem > dobra_celkem) {
-			System.out.println("Prumerna");
+		if (nej_vaz != null) {
+			System.out.println("Pracovnik s nejvice spolupracemi:");
+			System.out.print("ID: "+ nej_vaz.getID());
+			System.out.println(", Jmeno: "+ nej_vaz.getPrijmeni()+", "+nej_vaz.getJmeno());
 		}
 		else {
 			System.out.println("Dobra");
