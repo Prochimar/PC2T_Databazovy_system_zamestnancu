@@ -14,7 +14,7 @@ public class main {
 	                    3. Odebrat zaměstnance
 	                    4. Vyhledat zaměstnance dle ID
 	                    5. Spustit dovednost zaměstnance
-	                    6. Abecední výpis podle skupin
+	                    6. Abecední výpis podle přijmení a skupin
 	                    7. Statistiky
 	                    8. Počty zaměstnanců ve skupinách
 	                    9. Uložit do souboru
@@ -36,8 +36,11 @@ public class main {
 					String jmeno = sc.next();
 					System.out.println("Zadej příjmení: ");
 					String prijmeni = sc.next();
+					//TODO: ošéfit zadávání roku narození, aby se nezadával text místo čísla, což vyvolá, která je na celém switchi
 					System.out.println("Zadej rok narození: ");
 					int rok = sc.nextInt();
+				
+	
 					while (true) {
 						System.out.println("Vyber typ: ");
 						System.out.println("1. Bezpečnostní specialista");
@@ -49,11 +52,16 @@ public class main {
 							}
 							else if (typ == 2) {
 								db.pridejDatovehoAnalytika(jmeno, prijmeni, rok);
+							} else if (typ != 1 && typ != 2) {
+								System.out.println("Chyba: Musíš zadat 1 nebo 2!");
+								continue;
 							}
 							break;
 						} catch (Exception e) {
-							System.out.println("Chyba, zkuste znovu");
-							e.printStackTrace();
+							//System.out.println("Chyba, zkuste znovu");
+							//e.printStackTrace();
+							sc.nextLine(); 
+                			System.out.println("Chyba: Musíš zadat číslo, ne text!");
 							continue;
 						}
 						
@@ -64,6 +72,11 @@ public class main {
 				case 2 -> {
 					System.out.println("Zadej ID zaměstnance, ke kterému chceš přidat spolupráci: ");
 					int id = sc.nextInt();
+					if (db.getZamestnanec(id) == null) {
+						System.out.println("Zaměstnanec s tímto ID neexistuje.");
+						break;
+					}
+
 					Zamestnanec zamestnanec = db.getZamestnanec(id);
 					System.out.println("Zadej ID kolegy: ");
 
@@ -71,7 +84,10 @@ public class main {
 					if (idKolegy == id) {
 						System.out.println("Chyba: Nemůžeš přidat spolupráci sám se sebou!");
 						break;
-					}
+					} else if (db.getZamestnanec(idKolegy) == null) {
+						System.out.println("Zaměstnanec s tímto ID neexistuje.");
+						break;
+					} 
 					
 					int ukonceni = 0;
 					while (true) {
@@ -177,6 +193,11 @@ public class main {
 					break;
 				}
 				case 7  -> {
+					sc.nextLine();
+					if(db.getPrvky().isEmpty()) {
+						System.out.println("Databáze je prázdná, nelze zobrazit statistiky.");
+						break;
+					}
 					db.kvalitaSpoluprace();
 					break;
 				}
@@ -215,7 +236,7 @@ public class main {
 			}			
 			} catch (Exception e) {
 				sc.nextLine(); 
-                System.out.println("Chyba: Musíš zadat číslo, ne text!");
+                System.out.println("Chyba: Musíš zadat číslo, ne text!  sdaasdasdasdasdads");
 			}
 		}
 		sc.close();

@@ -56,6 +56,12 @@ public class Databaze {
 	public void printAlphabetOrder(String typ) {
 		ArrayList<String> prijmeniList = new ArrayList<String>();
 		ArrayList<Zamestnanec> zamestnanecList = sameTyp(typ);
+
+		if (zamestnanecList.isEmpty()) {
+			System.out.println("Nejsou žádní zaměstnanci typu "+typ);
+			return;
+		}
+
 		for (Zamestnanec i: zamestnanecList) {
 			prijmeniList.add(i.getPrijmeni());
 		}
@@ -102,10 +108,13 @@ public class Databaze {
                     case SPATNA: spatna++; break;
 					}
 				}
+			//TODO: ošéfit případ kdy jen někteří zamestnanci nemají spolupracovníky, aby se to nezobrazovalo jako "Spatna" nebo "Dobra" atd
+			//if(nej_vaz != null) {
 			System.out.print("Dobre spoluprace: "+ dobra);
 			System.out.print(", Prumerne spoluprace: "+ prumerna);
 			System.out.println(", Spatne spoluprace: "+ spatna);
-			
+			//}
+		
 			if (spolupracovnici.size() > pocet_nej_vaz) {
 				pocet_nej_vaz = spolupracovnici.size();
 				nej_vaz = prvkyDatabaze.get(i);
@@ -114,7 +123,8 @@ public class Databaze {
 			prumerna_celkem += prumerna;
 			dobra_celkem += dobra;
 			}
-		
+
+
 		System.out.print("Prevazujici kvalita spoluprace: ");
 		if (spatna_celkem > prumerna_celkem && spatna_celkem > dobra_celkem) {
 			System.out.println("Spatna");
@@ -125,12 +135,15 @@ public class Databaze {
 		else {
 			System.out.println("Dobra");
 		}
-		
+		//if(nej_vaz != null) {
 		System.out.println("Pracovnik s nejvice spolupracemi:");
 		System.out.print("ID: "+ nej_vaz.getID());
 		System.out.println(", Jmeno: "+ nej_vaz.getPrijmeni()+", "+nej_vaz.getJmeno());
-		}
-	
+		//}else {
+		//	System.out.println("Zaměstnanec nemá žádné spolupracovníky");
+		//}
+		//TODO: ošéfit případ kdy jen někteří zamestnanci nemají spolupracovníky, aby se to nezobrazovalo jako "Spatna" nebo "Dobra" atd.
+	}
 	public int pocetPodleTypu(String typ) {
 		ArrayList<Zamestnanec> zamestnanecList = sameTyp(typ);
 		int pocet = zamestnanecList.size();
