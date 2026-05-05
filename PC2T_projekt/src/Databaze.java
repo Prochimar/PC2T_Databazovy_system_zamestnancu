@@ -108,11 +108,11 @@ public class Databaze {
                     case SPATNA: spatna++; break;
 					}
 				}
-			
+			if (!spolupracovnici.isEmpty()) {
 			System.out.print("Dobre spoluprace: "+ dobra);
 			System.out.print(", Prumerne spoluprace: "+ prumerna);
 			System.out.println(", Spatne spoluprace: "+ spatna);
-			
+			}
 			if (spolupracovnici.size() > pocet_nej_vaz) {
 				pocet_nej_vaz = spolupracovnici.size();
 				nej_vaz = prvkyDatabaze.get(i);
@@ -122,7 +122,7 @@ public class Databaze {
 			dobra_celkem += dobra;
 			}
 
-
+if (spatna_celkem > 0 || prumerna_celkem > 0 || dobra_celkem > 0) {
 		System.out.print("Prevazujici kvalita spoluprace: ");
 		if (spatna_celkem > prumerna_celkem && spatna_celkem > dobra_celkem) {
 			System.out.println("Spatna");
@@ -132,12 +132,12 @@ public class Databaze {
 		}
 		else {
 			System.out.println("Dobra");
-		}
-
+		}}
+if (nej_vaz != null) {
 		System.out.println("Pracovnik s nejvice spolupracemi:");
 		System.out.print("ID: "+ nej_vaz.getID());
 		System.out.println(", Jmeno: "+ nej_vaz.getPrijmeni()+", "+nej_vaz.getJmeno());
-		
+}
 	}
 	
 	public int pocetPodleTypu(String typ) {
